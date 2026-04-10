@@ -1,0 +1,11 @@
+export default function Home() {
+    return (
+        <>
+            <h1>Home</h1>
+
+            <p>
+                Display all products with links to Details page.
+            </p>
+        </>
+    )
+}
