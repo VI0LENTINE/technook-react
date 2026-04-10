@@ -1,15 +1,11 @@
-import {loadStripe} from "@stripe/stripe-js";
-import {useCallback} from "react";
-import {EmbeddedCheckout, EmbeddedCheckoutProvider} from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import { useCallback } from "react";
+import { EmbeddedCheckout, EmbeddedCheckoutProvider } from "@stripe/react-stripe-js";
+
+const stripePromise = loadStripe("pk_test_YOUR_KEY");
 
 export default function Checkout() {
-    // Make sure to call `loadStripe` outside of a component’s render to avoid
-    // recreating the `Stripe` object on every render.
-    // This is your test publishable API key.
-    const stripePromise = loadStripe("pk_test_51SsB59BIoiFvCCMgafsN9prkR0PiopoBmRaX4S6ECQTUPIpB6i9OBBHsQQlnbtZc2nECO8cqf0PDcNQpXCDn6Woy00v0plQyID");
-
     const fetchClientSecret = useCallback(async () => {
-        // Create a Checkout Session
         const res = await fetch("http://localhost:8080/checkout/create-checkout-session", {
             method: "POST",
         });
@@ -17,18 +13,13 @@ export default function Checkout() {
         return data.clientSecret;
     }, []);
 
-    const options = {fetchClientSecret};
-
     return (
         <>
             <h1>Checkout</h1>
 
-            <EmbeddedCheckoutProvider
-                stripe={stripePromise}
-                options={options}
-            >
+            <EmbeddedCheckoutProvider stripe={stripePromise} options={{ fetchClientSecret }}>
                 <EmbeddedCheckout />
             </EmbeddedCheckoutProvider>
         </>
-    )
+    );
 }
