@@ -3,7 +3,7 @@ export interface CartItem {
     name: string;
     price: number;
     quantity: number;
-    imageUrl?: string;
+    imageUrl: string;
 }
 
 const CART_KEY = "cart";
@@ -18,26 +18,14 @@ export function saveCart(cart: CartItem[]) {
 
 export function addToCart(product: any) {
     const cart = getCart();
+    const existing = cart.find(i => i.id === product.id);
 
-    const existing = cart.find(item => item.id === product.id);
-
-    if (existing) {
-        existing.quantity++;
-    } else {
-        cart.push({
-            id: product.id,
-            name: product.name,
-            price: product.price,
-            quantity: 1,
-            imageUrl: product.imageUrl
-        });
-    }
+    if (existing) existing.quantity++;
+    else cart.push({ ...product, quantity: 1 });
 
     saveCart(cart);
 }
 
 export function getTotal(): number {
-    return getCart().reduce((sum, item) => {
-        return sum + item.price * item.quantity;
-    }, 0);
+    return getCart().reduce((sum, i) => sum + i.price * i.quantity, 0);
 }

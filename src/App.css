@@ -1,78 +1,421 @@
+/* ACNH-themed CSS */
+
 :root {
-  --primary: #9fd356;
-  --secondary: #ffd460;
-  --accent: #a8d8ea;
-  --bg: #f5f9f0;
-  --text: #2d6a4f;
+  --primary-color: #9fd356;    /* AC grass green */
+  --secondary-color: #ffd460;  /* AC sun yellow */
+  --accent-color: #a8d8ea;     /* AC sky blue */
+  --danger-color: #ff6b6b;     /* soft red */
+  --light-bg: #f5f9f0;         /* grass-like background */
+
+  --bg-main: #fffffd;          /* warm white */
+  --card-bg: #ffffff;
+  --leaf-dark: #7cb342;        /* darker leaf green */
+  --pastel-pink: #fcc5e8;      /* soft pink */
+  --pastel-purple: #e8d5f2;    /* soft purple */
+  --pastel-green: #d4f1d4;     /* soft green */
+  --pastel-blue: #d0e8f2;      /* soft blue */
+  --acorn-brown: #8b6f47;      /* warm brown */
+
+  --card-shadow: 0 8px 16px rgba(124, 195, 66, 0.12);
 }
 
-/* Background */
+.container-fluid {
+  background: transparent !important;
+}
+
 body {
-  background-image: url('public/acnh-bg.png');
+  background-image: url('public/acnh-bg.png') !important;
   background-size: cover;
+  background-position: center;
   background-attachment: fixed;
-  color: var(--text);
 }
 
-/* Navbar */
+/* Navigation Styling */
 .navbar {
-  background: linear-gradient(135deg, #b7e4c7, #a8d8ea);
-  border-bottom: 3px solid #7cb342;
+  background: linear-gradient(135deg, #b7e4c7 0%, #a8d8ea 100%) !important;
+  border-bottom: 4px solid #7cb342;
+  box-shadow: 0 4px 12px rgba(124, 195, 66, 0.15);
 }
 
 .navbar-brand {
-  font-weight: bold;
-  color: var(--text) !important;
+  color: #2d6a4f !important;
+  font-weight: 800;
+  letter-spacing: 2px;
+  font-size: 1.5rem !important;
+  text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
 }
 
-/* Cards */
+.navbar-brand:hover {
+  transform: scale(1.05);
+  transition: transform 0.2s ease;
+}
+
+.navbar a {
+  color: #2d6a4f !important;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.navbar a:hover {
+  color: #1a4d2e !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Card Styling */
 .card {
-  border-radius: 20px;
-  border: 2px solid #d4f1d4;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.08);
-  transition: 0.2s;
+  position: relative;
+  background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(245,249,240,0.95) 100%);
+  border-radius: 24px;
+  border: 3px solid #d4f1d4;
+
+  box-shadow:
+          0 10px 25px rgba(0, 0, 0, 0.08),
+          0 0 0 1px rgba(124, 195, 66, 0.1),
+          0 0 30px rgba(159, 211, 86, 0.15); /* soft green glow */
+
+  backdrop-filter: blur(6px); /* glassy AC feel */
+
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: -10px;
+  border-radius: 30px;
+
+  background: radial-gradient(
+          circle,
+          rgba(0,0,0,0.08) 0%,
+          rgba(0,0,0,0.04) 40%,
+          transparent 70%
+  );
+
+  z-index: -1;
+  filter: blur(8px);
 }
 
 .card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-10px) scale(1.03);
+
+  box-shadow:
+          0 20px 40px rgba(0, 0, 0, 0.12),
+          0 0 0 2px rgba(159, 211, 86, 0.3),
+          0 0 40px rgba(159, 211, 86, 0.25);
 }
 
-/* Buttons */
-.btn-primary {
-  background: linear-gradient(135deg, #7cc9a7, #5ab380);
+/* image gets that soft feel */
+.card-img-top {
+  border-bottom: 4px solid #d4f1d4;
+  object-fit: cover;
+  height: 240px;
+}
+
+.hover-card {
+  cursor: pointer;
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+.card-title {
+  color: #2d6a4f;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.card-text {
+  color: #4a6741;
+}
+
+/* Button Styling */
+.btn {
+  border-radius: 999px; /* pill buttons */
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
   border: none;
 }
 
+.btn-primary {
+  background: linear-gradient(135deg, #7cc9a7 0%, #5ab380 100%);
+  color: #ffffff !important;
+}
+
 .btn-primary:hover {
+  background: linear-gradient(135deg, #66b89a 0%, #4da673 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(124, 201, 167, 0.3);
+  color: #ffffff !important;
+}
+
+.btn-outline-primary {
+  border: 2px solid #7cc9a7;
+  color: #2d6a4f;
+}
+
+.btn-outline-primary:hover {
+  background: rgba(124, 201, 167, 0.1);
+  border-color: #5ab380;
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #ffd460 0%, #ffc940 100%);
+  color: #2d6a4f;
+  font-weight: 700;
+}
+
+.btn-success:hover {
+  background: linear-gradient(135deg, #ffc940 0%, #ffb820 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(255, 212, 96, 0.3);
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #ff9999 0%, #ff6b6b 100%);
+  color: #fff;
+}
+
+.btn-danger:hover {
+  background: linear-gradient(135deg, #ff8080 0%, #ff5252 100%);
   transform: translateY(-2px);
 }
 
-/* Inputs */
+/* Form Styling */
 .form-control {
-  border-radius: 10px;
+  border-radius: 12px;
+  border: 2px solid #d4f1d4;
+  background: #fafbf7;
+  color: #2d6a4f;
+  transition: all 0.2s ease;
 }
 
-/* Tables */
-.table th {
-  background: var(--bg);
+.form-control:focus {
+  border-color: #9fd356;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(159, 211, 86, 0.1);
 }
 
-/* Chat button */
-button {
-  border-radius: 10px;
+.form-control::placeholder {
+  color: #a0a8a0;
 }
 
+/* Alert Styling */
+.alert {
+  border-radius: 12px;
+  border: 2px solid;
+  font-weight: 500;
+}
+
+.alert-info {
+  background: #d0e8f2;
+  border-color: #a8d8ea;
+  color: #1a4d6d;
+}
+
+.alert-success {
+  background: #d4f1d4;
+  border-color: #9fd356;
+  color: #2d6a4f;
+}
+
+.alert-warning {
+  background: #ffefd5;
+  border-color: #ffd460;
+  color: #665c00;
+}
+
+.alert-danger {
+  background: #ffd4d4;
+  border-color: #ff6b6b;
+  color: #8b0000;
+}
+
+/* Table Styling */
+.table {
+  border-collapse: collapse;
+}
+
+.table thead th {
+  background-color: var(--light-bg);
+  border-bottom: 2px solid #dee2e6;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+/* Footer */
+footer {
+  background: var(--light-bg);
+  color: #6c757d;
+  font-size: 0.875rem;
+}
+
+footer a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+/* Product Grid */
+.col-sm-6,
+.col-lg-4,
+.col-xl-3 {
+  margin-bottom: 1rem;
+}
+
+/* Image Optimization */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Loading Spinner */
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
+  .navbar-brand {
+    font-size: 1.25rem;
+  }
+
+  .display-5 {
+    font-size: 2rem;
+  }
+
   .card {
     margin-bottom: 1rem;
   }
 
-  .navbar {
-    flex-direction: column;
-    gap: 10px;
+  .table-responsive {
+    font-size: 0.875rem;
   }
 
-  .table {
-    font-size: 0.9rem;
+  .btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.8125rem;
+  }
+}
+
+/* Sticky Elements */
+.sticky-top {
+  position: sticky;
+  top: 1.25rem;
+  z-index: 10;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar-brand {
+    font-size: 1.25rem;
+  }
+
+  .display-5 {
+    font-size: 2rem;
+  }
+
+  .card {
+    margin-bottom: 1rem;
+  }
+
+  .table-responsive {
+    font-size: 0.875rem;
+  }
+
+  .btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.8125rem;
+  }
+}
+
+/* Sticky Elements */
+.sticky-top {
+  position: sticky;
+  top: 1.25rem;
+  z-index: 10;
+}
+
+/* Text Color Override */
+body, .text-dark, p, span, li, a, h1, h2, h3, h4, h5, h6 {
+  color: #2d6a4f;
+}
+
+a {
+  color: #9fd356 !important;
+}
+
+a:hover {
+  color: #7cb342 !important;
+}
+
+.text-muted {
+  color: #7c8570 !important;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Success State */
+.text-success {
+  color: var(--secondary-color) !important;
+}
+
+.bg-success {
+  background-color: var(--secondary-color) !important;
+}
+
+/* Primary State */
+.text-primary {
+  color: var(--primary-color) !important;
+}
+
+.bg-primary {
+  background: linear-gradient(135deg, var(--primary-color) 0%, #1a4d7a 100%) !important;
+}
+
+/* Accessibility */
+.btn:focus,
+.form-control:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* Print Styles */
+@media print {
+  .navbar,
+  .btn,
+  footer {
+    display: none;
+  }
+
+  body {
+    font-size: 12pt;
   }
 }

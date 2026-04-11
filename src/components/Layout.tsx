@@ -1,28 +1,36 @@
-import { Link, Outlet } from "react-router";
+import {Link, Outlet} from "react-router";
 import ChatWidget from "./ChatWidget";
 
 export default function Layout() {
-    return (
+    return(
         <div className="container-fluid">
-            <nav className="navbar px-3">
-                <Link to="/" className="navbar-brand">
-                    🍃 TechNook
-                </Link>
+            <header>
+                <nav className="navbar navbar-light mb-4">
+                    <div className="container-fluid">
+                        <Link to="/" className="navbar-brand fw-bold">
+                            🍃 TechNook
+                        </Link>
 
-                <Link to="/cart" className="text-decoration-none">
-                    🛒 Cart
-                </Link>
-            </nav>
+                        <div className="d-flex align-items-center gap-3">
+                            <Link to="/cart" className="text-decoration-none text-dark fs-5">
+                                🛒 Cart
+                            </Link>
+                        </div>
+                    </div>
+                </nav>
+            </header>
 
-            <main className="container py-4">
-                <Outlet />
+            <main className="container-fluid py-4">
+                <Outlet/>
             </main>
 
-            <footer className="text-center py-4">
-                &copy; 2026 TechNook
+            <footer className="container-fluid mt-5 py-4 border-top">
+                <div className="text-center text-muted">
+                    <p>&copy; 2026 TechNook.</p>
+                </div>
             </footer>
 
             <ChatWidget />
         </div>
-    );
+    )
 }
