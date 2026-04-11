@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
+import { addToCart } from "../../utils/cart";
 
 interface Product {
     id: number;
@@ -16,6 +17,8 @@ export default function Details() {
     const [product, setProduct] = useState<Product | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [quantity, setQuantity] = useState(1);
+    const [added, setAdded] = useState(false);
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -38,6 +41,17 @@ export default function Details() {
         fetchProduct();
     }, [id]);
 
+    const handleAddToCart = () => {
+        if (!product) return;
+
+        for (let i = 0; i < quantity; i++) {
+            addToCart(product);
+        }
+
+        setAdded(true);
+        setTimeout(() => setAdded(false), 2000);
+    };
+
     if (loading) {
         return <p>Loading product...</p>;
     }
@@ -59,8 +73,26 @@ export default function Details() {
             <p>{product.description}</p>
             <h3>${product.price.toFixed(2)}</h3>
 
-            <button disabled>
-                Add to Cart (coming next)
+            <div>
+                <label>Quantity: </label>
+                <input
+                    type="number"
+                    min="1"
+                    value={quantity}
+                    onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+                />
+            </div>
+
+            <br />
+
+            <button onClick={handleAddToCart}>
+                {added ? "✓ Added!" : "Add to Cart"}
+            </button>
+
+            <br /><br />
+
+            <button onClick={() => navigate("/cart")}>
+                Go to Cart
             </button>
         </>
     );
