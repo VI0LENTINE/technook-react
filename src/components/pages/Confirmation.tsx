@@ -1,40 +1,92 @@
-import {useEffect, useState} from "react";
-import {Navigate} from "react-router";
+import { useEffect, useState } from "react";
+import { useNavigate, Navigate } from "react-router";
+import { saveCart } from "../../utils/cart";
+
+interface SessionData {
+    status: string;
+    customer_email: string;
+}
 
 export default function Confirmation() {
-    const [status, setStatus] = useState(null);
-    const [customerEmail, setCustomerEmail] = useState('');
+    const navigate = useNavigate();
+
+    const [status, setStatus] = useState<string | null>(null);
+    const [email, setEmail] = useState("");
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        const queryString = window.location.search;
-        const urlParams = new URLSearchParams(queryString);
-        const sessionId = urlParams.get('session_id');
+        const fetchStatus = async () => {
+            try {
+                const params = new URLSearchParams(window.location.search);
+                const sessionId = params.get("session_id");
 
-        fetch(`http://localhost:8080/checkout/session-status?session_id=${sessionId}`)
-            .then((res) => res.json())
-            .then((data) => {
+                if (!sessionId) {
+                    setError("Missing session ID.");
+                    setLoading(false);
+                    return;
+                }
+
+                const res = await fetch(
+                    `http://localhost:8080/checkout/session-status?session_id=${sessionId}`
+                );
+
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+                const data: SessionData = await res.json();
+
                 setStatus(data.status);
-                setCustomerEmail(data.customer_email);
-            });
+                setEmail(data.customer_email);
+
+                if (data.status === "complete") {
+                    saveCart([]);
+                }
+
+            } catch (err) {
+                console.error(err);
+                setError("Failed to verify payment.");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchStatus();
     }, []);
 
-    if (status === 'open') {
-        return (
-            <Navigate to="/checkout" />
-        )
+    if (loading) {
+        return <p>Verifying payment...</p>;
     }
 
-    if (status === 'complete') {
+    if (status === "open") {
+        return <Navigate to="/checkout" />;
+    }
+
+    if (error) {
         return (
-            <section id="success">
+            <>
+                <h1>Error</h1>
+                <p>{error}</p>
+                <button onClick={() => navigate("/")}>Back to Home</button>
+            </>
+        );
+    }
+
+    if (status === "complete") {
+        return (
+            <>
+                <h1>Payment Successful!</h1>
+
                 <p>
-                    We appreciate your business! A confirmation email will be sent to {customerEmail}.
-
-                    If you have any questions, please email <a href="mailto:orders@example.com">orders@example.com</a>.
+                    Thank you for your purchase.
+                    A confirmation email has been sent to <strong>{email}</strong>.
                 </p>
-            </section>
-        )
+
+                <button onClick={() => navigate("/")}>
+                    Continue Shopping
+                </button>
+            </>
+        );
     }
 
-    return null;
+    return <p>Unable to determine payment status.</p>;
 }
