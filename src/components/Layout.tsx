@@ -1,4 +1,5 @@
 import { Link, Outlet } from "react-router";
+import ChatWidget from "./ChatWidget";
 
 export default function Layout() {
     return (
@@ -22,6 +23,8 @@ export default function Layout() {
             <footer className="container-fluid mt-5">
                 TechNook, © 2026
             </footer>
+
+            <ChatWidget />
         </div>
     );
 }
